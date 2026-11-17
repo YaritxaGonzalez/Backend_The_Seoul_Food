@@ -1,5 +1,11 @@
 package cl.theseoulfood.theseoulfood.repository;
 
-public class ProductoRepository {
-    
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import cl.theseoulfood.theseoulfood.model.Producto;
+
+@Repository
+public interface ProductoRepository extends JpaRepository<Producto, Integer> {
+
 }
