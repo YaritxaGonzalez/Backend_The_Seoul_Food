@@ -1,11 +1,9 @@
 package cl.theseoulfood.theseoulfood.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import cl.theseoulfood.theseoulfood.model.Producto;
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
-@Repository
-public interface ProductoRepository extends JpaRepository<Producto, Integer> {
-
+public interface ProductoRepository extends JpaRepository<Producto, Long> {
+    List<Producto> findByCategoria(String categoria);
 }
