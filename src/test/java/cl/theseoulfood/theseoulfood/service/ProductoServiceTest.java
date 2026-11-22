@@ -21,6 +21,7 @@ import static org.mockito.Mockito.*;
 class ProductoServiceTest {
 
     @Mock ProductoRepository repo;
+    @Mock ImagenStorageService imagenes;
     @InjectMocks ProductoService service;
 
     private Producto producto(String nombre) {

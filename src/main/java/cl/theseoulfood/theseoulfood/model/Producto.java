@@ -28,6 +28,9 @@ public class Producto {
     @Min(0)
     private Integer stock = 0;
 
+    @Column(length = 255)
+    private String imagen;
+
     public Producto() {}
 
     public Long getId() { return id; }
@@ -42,4 +45,6 @@ public class Producto {
     public void setCategoria(String categoria) { this.categoria = categoria; }
     public Integer getStock() { return stock; }
     public void setStock(Integer stock) { this.stock = stock; }
+    public String getImagen() { return imagen; }
+    public void setImagen(String imagen) { this.imagen = imagen; }
 }

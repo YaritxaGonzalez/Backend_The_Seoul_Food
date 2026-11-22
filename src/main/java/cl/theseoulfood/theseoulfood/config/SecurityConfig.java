@@ -41,6 +41,7 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/uploads/**").permitAll() 
 
                         // Usuarios: solo ADMIN
                         .requestMatchers("/api/v1/usuarios/**").hasRole("ADMIN")
