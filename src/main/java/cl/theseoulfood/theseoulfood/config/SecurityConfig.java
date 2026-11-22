@@ -47,8 +47,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/usuarios/**").hasRole("ADMIN")
 
                         // Productos: los 3 roles ven; solo ADMIN modifica
-                        .requestMatchers(HttpMethod.GET, "/api/v1/productos/**")
-                        .hasAnyRole("ADMIN", "VENDEDOR", "CLIENTE")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/productos/**").permitAll()
                         .requestMatchers("/api/v1/productos/**").hasRole("ADMIN")
 
                         // Órdenes: ADMIN y VENDEDOR ven; el CLIENTE crea las suyas (cuando exista el

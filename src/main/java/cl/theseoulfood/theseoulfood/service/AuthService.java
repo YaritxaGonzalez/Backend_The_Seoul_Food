@@ -1,12 +1,5 @@
 package cl.theseoulfood.theseoulfood.service;
 
-import cl.theseoulfood.theseoulfood.dto.AuthDtos.*;
-import cl.theseoulfood.theseoulfood.model.Rol;
-import cl.theseoulfood.theseoulfood.model.Usuario;
-import cl.theseoulfood.theseoulfood.repository.UsuarioRepository;
-import cl.theseoulfood.theseoulfood.security.CustomUserDetailsService;
-import cl.theseoulfood.theseoulfood.security.JwtService;
-import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,6 +7,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import cl.theseoulfood.theseoulfood.dto.AuthDtos.AuthResponse;
+import cl.theseoulfood.theseoulfood.dto.AuthDtos.LoginRequest;
+import cl.theseoulfood.theseoulfood.dto.AuthDtos.RegisterRequest;
+import cl.theseoulfood.theseoulfood.model.Rol;
+import cl.theseoulfood.theseoulfood.model.Usuario;
+import cl.theseoulfood.theseoulfood.repository.UsuarioRepository;
+import cl.theseoulfood.theseoulfood.security.CustomUserDetailsService;
+import cl.theseoulfood.theseoulfood.security.JwtService;
+import io.jsonwebtoken.JwtException;
 
 @Service
 public class AuthService {
