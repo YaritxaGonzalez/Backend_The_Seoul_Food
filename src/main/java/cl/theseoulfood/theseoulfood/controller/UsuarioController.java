@@ -7,7 +7,7 @@ import cl.theseoulfood.theseoulfood.model.Usuario;
 import cl.theseoulfood.theseoulfood.repository.UsuarioRepository;
 import cl.theseoulfood.theseoulfood.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
