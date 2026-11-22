@@ -1,13 +1,15 @@
-
 package cl.theseoulfood.theseoulfood.controller;
+
 import cl.theseoulfood.theseoulfood.model.Producto;
 import cl.theseoulfood.theseoulfood.service.ProductoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -44,6 +46,12 @@ public class ProductoController {
     @PutMapping("/{id}")
     public Producto actualizar(@PathVariable Long id, @Valid @RequestBody Producto p) {
         return service.actualizar(id, p);
+    }
+
+    @Operation(summary = "Subir o reemplazar la imagen de un producto (JPG, PNG o WEBP, máx. 2 MB)")
+    @PostMapping(value = "/{id}/imagen", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Producto subirImagen(@PathVariable Long id, @RequestPart("archivo") MultipartFile archivo) {
+        return service.actualizarImagen(id, archivo);
     }
 
     @Operation(summary = "Eliminar un producto")
