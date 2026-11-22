@@ -1,8 +1,16 @@
 package cl.theseoulfood.theseoulfood.service;
 
-import cl.theseoulfood.theseoulfood.dto.OrdenDtos.*;
-import cl.theseoulfood.theseoulfood.model.*;
-import cl.theseoulfood.theseoulfood.repository.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,12 +20,18 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import cl.theseoulfood.theseoulfood.dto.OrdenDtos.CrearOrdenRequest;
+import cl.theseoulfood.theseoulfood.dto.OrdenDtos.ItemRequest;
+import cl.theseoulfood.theseoulfood.dto.OrdenDtos.OrdenResponse;
+import cl.theseoulfood.theseoulfood.model.DetalleOrden;
+import cl.theseoulfood.theseoulfood.model.EstadoOrden;
+import cl.theseoulfood.theseoulfood.model.Orden;
+import cl.theseoulfood.theseoulfood.model.Producto;
+import cl.theseoulfood.theseoulfood.model.Rol;
+import cl.theseoulfood.theseoulfood.model.Usuario;
+import cl.theseoulfood.theseoulfood.repository.OrdenRepository;
+import cl.theseoulfood.theseoulfood.repository.ProductoRepository;
+import cl.theseoulfood.theseoulfood.repository.UsuarioRepository;
 
 @ExtendWith(MockitoExtension.class)
 class OrdenServiceTest {

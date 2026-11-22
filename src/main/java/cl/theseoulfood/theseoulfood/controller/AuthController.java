@@ -1,6 +1,9 @@
 package cl.theseoulfood.theseoulfood.controller;
 
-import cl.theseoulfood.theseoulfood.dto.AuthDtos.*;
+import cl.theseoulfood.theseoulfood.dto.AuthDtos.AuthResponse;
+import cl.theseoulfood.theseoulfood.dto.AuthDtos.LoginRequest;
+import cl.theseoulfood.theseoulfood.dto.AuthDtos.RefreshRequest;
+import cl.theseoulfood.theseoulfood.dto.AuthDtos.RegisterRequest;
 import cl.theseoulfood.theseoulfood.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

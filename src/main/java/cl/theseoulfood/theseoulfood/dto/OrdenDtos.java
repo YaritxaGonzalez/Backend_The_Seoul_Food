@@ -2,7 +2,9 @@ package cl.theseoulfood.theseoulfood.dto;
 
 import cl.theseoulfood.theseoulfood.model.EstadoOrden;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.List;
