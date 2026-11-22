@@ -21,7 +21,8 @@ class ApiIntegrationTest {
 
     private static final String PASS = "Test12345!";
 
-    @Autowired MockMvc mvc;
+    @Autowired
+    MockMvc mvc;
 
     // ---------- helpers ----------
 
@@ -35,8 +36,8 @@ class ApiIntegrationTest {
         return mvc.perform(post("/api/v1/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"email\":\"" + email + "\",\"password\":\"" + PASS + "\"}"))
-            .andExpect(status().isOk())
-            .andReturn().getResponse().getContentAsString();
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
     }
 
     private String token(String email) throws Exception {
@@ -49,7 +50,7 @@ class ApiIntegrationTest {
 
     private String productoJson(String nombre, int stock) {
         return "{\"nombre\":\"" + nombre + "\",\"descripcion\":\"test\","
-            + "\"precio\":5000,\"categoria\":\"Test\",\"stock\":" + stock + "}";
+                + "\"precio\":5000,\"categoria\":\"Test\",\"stock\":" + stock + "}";
     }
 
     private String crearProducto(String nombre, int stock) throws Exception {
@@ -57,8 +58,8 @@ class ApiIntegrationTest {
                 .header("Authorization", bearer("admin@seoulfood.cl"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(productoJson(nombre, stock)))
-            .andExpect(status().isCreated())
-            .andReturn().getResponse().getContentAsString();
+                .andExpect(status().isCreated())
+                .andReturn().getResponse().getContentAsString();
         return extraer(res, "\"id\":(\\d+)");
     }
 
@@ -76,7 +77,7 @@ class ApiIntegrationTest {
         mvc.perform(post("/api/v1/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"email\":\"admin@seoulfood.cl\",\"password\":\"incorrecta\"}"))
-            .andExpect(status().isUnauthorized());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -85,8 +86,8 @@ class ApiIntegrationTest {
         String res = mvc.perform(post("/api/v1/auth/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"nombre\":\"Nuevo\",\"email\":\"" + email + "\",\"password\":\"Clave12345\"}"))
-            .andExpect(status().isCreated())
-            .andReturn().getResponse().getContentAsString();
+                .andExpect(status().isCreated())
+                .andReturn().getResponse().getContentAsString();
         assertTrue(res.contains("\"rol\":\"CLIENTE\""));
     }
 
@@ -95,7 +96,7 @@ class ApiIntegrationTest {
         mvc.perform(post("/api/v1/auth/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"nombre\":\"X\",\"email\":\"x@correo.cl\",\"password\":\"123\"}"))
-            .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -104,7 +105,7 @@ class ApiIntegrationTest {
         mvc.perform(post("/api/v1/auth/refresh")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"refreshToken\":\"" + refresh + "\"}"))
-            .andExpect(status().isOk());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -113,67 +114,67 @@ class ApiIntegrationTest {
         mvc.perform(post("/api/v1/auth/refresh")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"refreshToken\":\"" + access + "\"}"))
-            .andExpect(status().isUnauthorized());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
     void tokenManipuladoDa401() throws Exception {
         String t = token("admin@seoulfood.cl");
-        mvc.perform(get("/api/v1/productos")
+        mvc.perform(get("/api/v1/ordenes")
                 .header("Authorization", "Bearer " + t.substring(0, t.length() - 2) + "xx"))
-            .andExpect(status().isUnauthorized());
+                .andExpect(status().isUnauthorized());
     }
 
     // ---------- permisos por rol ----------
 
     @Test
-    void productosSinTokenDa401() throws Exception {
-        mvc.perform(get("/api/v1/productos")).andExpect(status().isUnauthorized());
+    void productosSinTokenSonPublicos() throws Exception {
+        mvc.perform(get("/api/v1/productos")).andExpect(status().isOk());
     }
 
     @Test
     void lostresRolesPuedenVerProductos() throws Exception {
-        for (String email : new String[]{"admin@seoulfood.cl", "vendedor@seoulfood.cl", "cliente@seoulfood.cl"}) {
+        for (String email : new String[] { "admin@seoulfood.cl", "vendedor@seoulfood.cl", "cliente@seoulfood.cl" }) {
             mvc.perform(get("/api/v1/productos").header("Authorization", bearer(email)))
-                .andExpect(status().isOk());
+                    .andExpect(status().isOk());
         }
     }
 
     @Test
     void soloAdminCreaProductos() throws Exception {
         String nombre = "Plato-" + UUID.randomUUID();
-        for (String email : new String[]{"vendedor@seoulfood.cl", "cliente@seoulfood.cl"}) {
+        for (String email : new String[] { "vendedor@seoulfood.cl", "cliente@seoulfood.cl" }) {
             mvc.perform(post("/api/v1/productos")
                     .header("Authorization", bearer(email))
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(productoJson(nombre, 5)))
-                .andExpect(status().isForbidden());
+                    .andExpect(status().isForbidden());
         }
         mvc.perform(post("/api/v1/productos")
                 .header("Authorization", bearer("admin@seoulfood.cl"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(productoJson(nombre, 5)))
-            .andExpect(status().isCreated());
+                .andExpect(status().isCreated());
     }
 
     @Test
     void soloAdminGestionaUsuarios() throws Exception {
         mvc.perform(get("/api/v1/usuarios").header("Authorization", bearer("admin@seoulfood.cl")))
-            .andExpect(status().isOk());
+                .andExpect(status().isOk());
         mvc.perform(get("/api/v1/usuarios").header("Authorization", bearer("vendedor@seoulfood.cl")))
-            .andExpect(status().isForbidden());
+                .andExpect(status().isForbidden());
         mvc.perform(get("/api/v1/usuarios").header("Authorization", bearer("cliente@seoulfood.cl")))
-            .andExpect(status().isForbidden());
+                .andExpect(status().isForbidden());
     }
 
     @Test
     void ordenesLasVenAdminYVendedorPeroNoElCliente() throws Exception {
         mvc.perform(get("/api/v1/ordenes").header("Authorization", bearer("admin@seoulfood.cl")))
-            .andExpect(status().isOk());
+                .andExpect(status().isOk());
         mvc.perform(get("/api/v1/ordenes").header("Authorization", bearer("vendedor@seoulfood.cl")))
-            .andExpect(status().isOk());
+                .andExpect(status().isOk());
         mvc.perform(get("/api/v1/ordenes").header("Authorization", bearer("cliente@seoulfood.cl")))
-            .andExpect(status().isForbidden());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -182,7 +183,7 @@ class ApiIntegrationTest {
                 .header("Authorization", bearer("vendedor@seoulfood.cl"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"items\":[{\"productoId\":1,\"cantidad\":1}]}"))
-            .andExpect(status().isForbidden());
+                .andExpect(status().isForbidden());
     }
 
     // ---------- flujo de negocio completo ----------
@@ -197,11 +198,11 @@ class ApiIntegrationTest {
                 .header("Authorization", cliente)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"items\":[{\"productoId\":" + id + ",\"cantidad\":2}]}"))
-            .andExpect(status().isCreated());
+                .andExpect(status().isCreated());
 
         // el stock quedó en 3
         String prod = mvc.perform(get("/api/v1/productos/" + id).header("Authorization", cliente))
-            .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
         assertTrue(prod.contains("\"stock\":3"), prod);
 
         // exceso: pide 4 y solo hay 3
@@ -209,11 +210,11 @@ class ApiIntegrationTest {
                 .header("Authorization", cliente)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"items\":[{\"productoId\":" + id + ",\"cantidad\":4}]}"))
-            .andExpect(status().isConflict());
+                .andExpect(status().isConflict());
 
         // el stock sigue en 3 (rollback)
         String prod2 = mvc.perform(get("/api/v1/productos/" + id).header("Authorization", cliente))
-            .andReturn().getResponse().getContentAsString();
+                .andReturn().getResponse().getContentAsString();
         assertTrue(prod2.contains("\"stock\":3"), prod2);
     }
 
@@ -223,7 +224,7 @@ class ApiIntegrationTest {
                 .header("Authorization", bearer("cliente@seoulfood.cl"))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"items\":[]}"))
-            .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -236,17 +237,17 @@ class ApiIntegrationTest {
                 .header("Authorization", cliente)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"items\":[{\"productoId\":" + id + ",\"cantidad\":5}]}"))
-            .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
+                .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
         String ordenId = extraer(orden, "^\\{\"id\":(\\d+)");
 
         mvc.perform(put("/api/v1/ordenes/" + ordenId + "/estado")
                 .header("Authorization", admin)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"estado\":\"CANCELADA\"}"))
-            .andExpect(status().isOk());
+                .andExpect(status().isOk());
 
         String prod = mvc.perform(get("/api/v1/productos/" + id).header("Authorization", admin))
-            .andReturn().getResponse().getContentAsString();
+                .andReturn().getResponse().getContentAsString();
         assertTrue(prod.contains("\"stock\":5"), prod);
     }
 }
