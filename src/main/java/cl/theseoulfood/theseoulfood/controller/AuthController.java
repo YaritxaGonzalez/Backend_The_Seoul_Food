@@ -6,6 +6,7 @@ import cl.theseoulfood.theseoulfood.dto.AuthDtos.RefreshRequest;
 import cl.theseoulfood.theseoulfood.dto.AuthDtos.RegisterRequest;
 import cl.theseoulfood.theseoulfood.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/auth")
 @Tag(name = "Autenticación")
+@SecurityRequirements
 public class AuthController {
 
     private final AuthService service;

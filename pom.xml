@@ -19,6 +19,12 @@
 	</properties>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
 		<!-- Web / API REST (en Spring Boot 4 el starter web se llama webmvc) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
